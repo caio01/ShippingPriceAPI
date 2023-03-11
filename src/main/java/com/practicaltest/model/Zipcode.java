@@ -1,10 +1,5 @@
 package com.practicaltest.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Zipcode {
     private String zipcode;
 
@@ -13,4 +8,11 @@ public class Zipcode {
     }
 
     public Zipcode () {}
+
+    public String getCep() {
+        return zipcode;
+    }
+    public void setCep(String zipcode) {
+        this.zipcode = zipcode;
+    }
 }
