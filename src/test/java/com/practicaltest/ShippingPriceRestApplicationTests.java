@@ -71,7 +71,52 @@ public class ShippingPriceRestApplicationTests {
                                 "\"cidade\":\"São Paulo\"," +
                                 "\"estado\":\"SP\"," +
                                 "\"frete\":\"7.85\"" +
-                                "}"
+                        "}"
+                ));
+    }
+
+    @Test
+    void testCasePostInvalidZipCode() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/v1/consulta-endereco")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"cep\":\"010010010\"}")
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(
+                        "{\"message\":\"O CEP informado é inválido.\"}"
+                ));
+    }
+
+    @Test
+    void testCasePostInvalidZipCode2() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/v1/consulta-endereco")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"cep\":\"01001-01a\"}")
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(
+                        "{\"message\":\"O CEP informado é inválido.\"}"
+                ));
+    }
+
+    @Test
+    void testCasePostZipCodeNotEncontred() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/v1/consulta-endereco")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"cep\":\"99999-999\"}")
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(
+                        "{\"message\":\"O CEP informado não foi encontrado.\"}"
                 ));
     }
 
