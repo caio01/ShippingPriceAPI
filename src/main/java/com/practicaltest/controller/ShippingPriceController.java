@@ -17,7 +17,6 @@ public class ShippingPriceController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ShippingPrice consultShippingPrice(@RequestBody Zipcode zipcode) {
-        System.out.println(zipcode.getCep());
         return ShippingPriceService.consultZipCode(zipcode.getCep());
     }
 
