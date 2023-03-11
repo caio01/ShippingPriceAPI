@@ -23,7 +23,7 @@ public class ShippingPriceControllerAdvice extends ResponseEntityExceptionHandle
     @ExceptionHandler(ZipcodeNullException.class)
     public ResponseEntity<Object> captureNullErrorClient() {
         Map<String, Object> body = new HashMap<String, Object>();
-        body.put("message", "O CEP informado, não foi encontrado.");
+        body.put("message", "O CEP informado não foi encontrado.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
