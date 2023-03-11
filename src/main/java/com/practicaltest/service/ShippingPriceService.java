@@ -3,6 +3,8 @@ package com.practicaltest.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import com.practicaltest.exception.ZipcodeNullException;
+import com.practicaltest.exception.ZipcodeValidateException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,7 @@ public class ShippingPriceService {
 
     public static ShippingPrice consultZipCode(String zipcode) {
         if(!validZipCode(zipcode)) {
-            //lança exceção de formato de cep inválido
-            return null;
+            throw new ZipcodeValidateException();
         } else {
             String url = String.format("https://viacep.com.br/ws/%s/json/", zipcode);
             RestTemplate restTemplate = new RestTemplate();
@@ -24,8 +25,7 @@ public class ShippingPriceService {
                     .exchange(url, HttpMethod.GET, new HttpEntity<>(new String()), HashMap.class);
 
             if (response.getBody().containsKey("erro")) {
-                //lança exceção de cep não encontrado
-                return null;
+                throw new ZipcodeNullException();
             } else {
                 ShippingPrice shippingPrice = new ShippingPrice(
                         new Zipcode(response.getBody().get("cep").toString()),
